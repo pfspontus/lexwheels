@@ -1,5 +1,13 @@
 """
 Cars data
+
+Example
+    >>> from models import conn
+    >>> from models import cars
+    >>> ids = (1, 2)
+    >>> cars.some(conn, ids)
+    [Car(id=1, owner_id=37, make='Mazda', model='Protege', year=1997, owner=None),
+     Car(id=2, owner_id=32, make='Acura', model='MDX', year=2002, owner=None)]
 """
 from collections import namedtuple
 

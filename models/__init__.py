@@ -1,5 +1,20 @@
 """
 Call create_db to setup database with tables
+
+Example
+    >>> import models
+
+    To create the tables car and owner in the database
+    >>> models.create_db()
+
+    And fill it with mock data
+    >>> models.fill_db_with_mocks()
+
+    Query for a owner filled with owned cars
+    >>> owner_id = 1
+    >>> models.one_owner_with_cars(owner_id)
+    Owner(id=1, name='Gwen Bartlomieczak',
+          cars=[Car(id=84, owner_id=1, make='Dodge', model='Ram 1500', year=2007, owner=None)])
 """
 import sqlite3
 

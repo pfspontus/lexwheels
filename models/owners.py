@@ -1,5 +1,12 @@
 """
 Owner data
+
+Example
+    >>> from models import conn
+    >>> from models import owners
+    >>> ids = 1
+    >>> owners.one(conn, id)
+    Owner(id=1, name='Gwen Bartlomieczak', cars=[])
 """
 from collections import namedtuple
 
