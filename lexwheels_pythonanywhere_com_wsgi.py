@@ -40,6 +40,9 @@
 
 
 import sys
+import os
+from dotenv import load_dotenv
+
 
 # The "/home/lexwheels" below specifies your home
 # directory -- the rest should be the directory you uploaded your Flask
@@ -49,6 +52,8 @@ import sys
 # specify "/home/lexwheels/myproject"
 
 path = '/home/lexwheels/flask_hello'
+load_dotenv(os.path.join(path, '.env'))
+
 if path not in sys.path:
     sys.path.append(path)
 
