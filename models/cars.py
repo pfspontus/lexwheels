@@ -54,12 +54,27 @@ def some_sql(ids: tuple) -> str:
     query = f'select {cols} from car where car.id in {tuple(ids)}'
     return query
 
+def one_sql(id: int) -> str:
+    """
+    SQL query string to select given car ids
+    """
+    cols = 'car.id, car.owner_id, car.make, car.model, car.year'
+    query = f'select {cols} from car where car.id in {id}'
+    return query
+
 
 def some(conn, ids: tuple, opts=None) -> list:
     """
     Returns list of Car namedtuples, associated with given ids
     """
     return _execute(conn, some_sql(ids))
+
+
+def one(conn, id: int, opts=None) -> list:
+    """
+    Returns list of Car namedtuples, associated with given ids
+    """
+    return _execute(conn, one_sql(id))
 
 
 def all_sql() -> str:
