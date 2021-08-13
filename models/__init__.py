@@ -47,3 +47,26 @@ class Models:
                         query = text(line)
                         conn.execute(query)
             trans.commit()
+
+    def get_owner(self, owner_id):
+        return self.Owner.query.filter_by(id=owner_id).first()
+
+    def get_all_owners(self):
+        return self.Owner.query.all()
+
+    def get_car(self, car_id):
+        return self.Car.query.filter_by(id=car_id).first()
+
+    def get_all_cars(self):
+        return self.Car.query.all()
+
+    def delete_car(self, car_obj):
+        s = self.db.session
+        s.delete(car_obj)
+        s.commit()
+
+    def delete_owner(self, owner_obj):
+        s = self.db.session
+        for car_obj in owner_obj.cars:
+            s.delete(car_obj)
+        s.delete(owner_obj)
