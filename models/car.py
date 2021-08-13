@@ -22,5 +22,5 @@ def init(db):
             year = self.year or '<unknown year>'
             make = self.make or '<unknown make>'
             model = self.model or '<unknown model>'
-            return f'<Car {year}, {make} {model} owned by>'
+            return f'<Car {year}, {make} {model}>'
     return Car

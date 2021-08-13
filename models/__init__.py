@@ -2,22 +2,27 @@
 Call create_db to setup database with tables
 
 Example
-    >>> import models
+    >>> from main import models
 
     To create the tables car and owner in the database
     >>> models.create_db()
 
-    And fill it with mock data
-    >>> models.fill_db_with_mocks()
+    Adding a Owner
+    >>> owner = models.Owner('Bob')
+    >>> owner.id
+    >>> models.add(owner)
+    >>> owner.id
+    1
 
     Query for a owner filled with owned cars
     >>> owner_id = 1
-    >>> models.one_owner_with_cars(owner_id)
-    Owner(id=1, name='Gwen Bartlomieczak',
-          cars=[Car(id=84, owner_id=1, make='Dodge', model='Ram 1500', year=2007, owner=None)])
+    >>> owner = models.get_owner(owner_id)
+    >>> owner
+    <Owner Bob>
+    >>> owner.cars
+    []
 """
-
-from sqlalchemy import text
+from random import choice
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -34,19 +39,38 @@ class Models:
 
     def create_db(self):
         self.db.create_all()
+        self.db.session.commit()
 
     def drop_all(self):
-        self.db.drop_all()
+        for o in self.get_all_owners():
+            self.delete_owner(o)
+
+    def fill_owners(self):
+        s = self.db.session
+        with open('mock_data/names.csv', 'rt') as fd:
+            for name in fd.readlines():
+                owner = self.Owner(name=name)
+                s.add(owner)
+        s.commit()
+
+    def fill_cars(self):
+        owners = self.get_all_owners()
+        s = self.db.session
+        with open('mock_data/cars.csv', 'rt') as fd:
+            for line in fd.readlines():
+                make, model, year = line.split(',')
+                item = self.Car(make=make, model=model, year=year)
+                choice(owners).cars.append(item)
+        s.commit()
 
     def fill_db_with_mocks(self):
-        with self.db.engine.connect() as conn:
-            trans = conn.begin()
-            for filename in ['owners.sql', 'cars.sql']:
-                with open(f'mock_data/{filename}', 'rt') as fd:
-                    for line in fd.readlines():
-                        query = text(line)
-                        conn.execute(query)
-            trans.commit()
+        self.fill_owners()
+        self.fill_cars()
+
+    def add_owner(self, owner_obj):
+        s = self.db.session
+        s.add(owner_obj)
+        s.commit()
 
     def get_owner(self, owner_id):
         return self.Owner.query.filter_by(id=owner_id).first()
@@ -70,3 +94,4 @@ class Models:
         for car_obj in owner_obj.cars:
             s.delete(car_obj)
         s.delete(owner_obj)
+        s.commit()
