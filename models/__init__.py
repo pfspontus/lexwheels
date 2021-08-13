@@ -16,52 +16,34 @@ Example
     Owner(id=1, name='Gwen Bartlomieczak',
           cars=[Car(id=84, owner_id=1, make='Dodge', model='Ram 1500', year=2007, owner=None)])
 """
-import sqlite3
 
-from models import cars
-from models import owners
+from sqlalchemy import text
 
-# conn = sqlite3.connect('db/lexwheels.db')
+from flask_sqlalchemy import SQLAlchemy
 
-
-def create_db(conn):
-    """
-    Creates tables car and owner in the database.
-    The database file is located in the db folder
-    """
-    try:
-        cursor = conn.cursor()
-        tables = [cars, owners]
-        for table in tables:
-            cursor.execute(table.create_table_sql())
-    except sqlite3.Error as e:
-        print('Error message:', e.args)
+from models import car
+from models import owner
 
 
-def fill_db_with_mocks(conn):
-    """
-    Fills tables car and owner with mock data for testing purposes.
-    """
-    try:
-        cursor = conn.cursor()
-        tables = ['cars.sql', 'owners.sql']
-        for filename in tables:
-            with open(f'mock_data/{filename}', 'rt') as fd:
-                for line in fd.readlines():
-                    cursor.execute(line)
-                conn.commit()
-    except sqlite3.Error as e:
-        print('Error message:', e.args)
+class Models:
+    def __init__(self, app):
+        "Interface to access lexwheels data"
+        self.db = SQLAlchemy(app)
+        self.Car = car.init(self.db)
+        self.Owner = owner.init(self.db)
 
+    def create_db(self):
+        self.db.create_all()
 
-def one_owner_with_cars(conn, id: int) -> owners.Owner:
-    """
-    Gets owner associated with id. Fills the cars
-    attribute with the cars owned.
+    def drop_all(self):
+        self.db.drop_all()
 
-    Returns a Owner namedtuple
-    """
-    owner = owners.one(conn, id)
-    owner_cars = cars.with_owner(conn, owner)
-    owner.cars.extend(owner_cars)
-    return owner
+    def fill_db_with_mocks(self):
+        with self.db.engine.connect() as conn:
+            trans = conn.begin()
+            for filename in ['owners.sql', 'cars.sql']:
+                with open(f'mock_data/{filename}', 'rt') as fd:
+                    for line in fd.readlines():
+                        query = text(line)
+                        conn.execute(query)
+            trans.commit()
