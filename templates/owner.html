@@ -1,0 +1,31 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Owner details {{ owner.name }}{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-fixed-top">
+  <a href="{{ url_for('welcome') }}">Back</a>
+</div>
+{% endblock %}
+
+{% block content %}
+    <p>
+      <h2>{{ owner.name }}</h2>
+      <table style="width:50%">
+        <tr>
+          <th>Year</th>
+          <th>Make</th> 
+          <th>Model</th>
+        </tr>
+          {% for car in owner.cars %}
+            <tr>
+              <td>{{car.year}}</td>
+              <td>{{ car.make }}</td>
+              <td>{{ car.model }}</td>
+            </tr>
+          {% endfor %}
+      </table>      
+    </p>
+{% endblock %}
+
+

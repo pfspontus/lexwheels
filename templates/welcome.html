@@ -1,0 +1,17 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Welcome to lexwheels{% endblock %}
+
+{% block content %}
+    <p>
+      <h2>Owners</h2>
+      <ul>
+        {% for owner in owners %}
+          <li>
+            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
+          </li>
+        {% endfor %}
+      </ul>
+    </p>
+{% endblock %}
+
