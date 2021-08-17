@@ -1,17 +1,41 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Welcome to lexwheels{% endblock %}
 
-{% block content %}
-    <p>
-      <h2>Owners</h2>
-      <ul>
-        {% for owner in owners %}
-          <li>
-            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
+{% block navbar %}
+  {% if g.user %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out<span class="sr-only">(current)</span></a>
           </li>
-        {% endfor %}
-      </ul>
-    </p>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('welcome') }}">Admin</a>
+          </li>
+  {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Log In<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Admin</a>
+          </li>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Owners</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for owner in owners %}
+        <tr>
+          <td scope="row">
+            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
 

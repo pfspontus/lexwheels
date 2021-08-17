@@ -11,7 +11,7 @@ from setup_config import setup_config
 def create_app(testing=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET='dev'
+        SECRET_KEY=os.urandom(24)
     )
 
     if testing:
@@ -27,6 +27,13 @@ def create_app(testing=None):
     models = Models()
     models.init_app(app)
     Bootstrap(app)
+
+    from lexwheels.auth import auth_page
+    from lexwheels.auth import define as auth_views_define
+    from lexwheels.auth import login_required
+    auth_views_define(auth_page, models)
+    app.register_blueprint(auth_page)
+
     from api import api_page
     from api.views import define as api_views_define
     api_views_define(api_page, models)
@@ -38,6 +45,7 @@ def create_app(testing=None):
         return render_template('welcome.html', owners=owners)
 
     @app.route('/owner/<int:id>')
+    @login_required
     def owner(id):
         owner = models.get_owner(id)
         return render_template('owner.html', owner=owner)

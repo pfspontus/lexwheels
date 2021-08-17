@@ -1,29 +1,45 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Owner details {{ owner.name }}{% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-fixed-top">
-  <a href="{{ url_for('welcome') }}">Back</a>
-</div>
+  {% if g.user %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('welcome') }}">Admin</a>
+          </li>
+  {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Log In<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item disabled">
+            <a class="nav-link" href="#">Admin</a>
+          </li>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
     <p>
       <h2>{{ owner.name }}</h2>
-      <table style="width:50%">
-        <tr>
-          <th>Year</th>
-          <th>Make</th> 
-          <th>Model</th>
-        </tr>
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Make</th> 
+            <th scope="col">Model</th>
+          </tr>
+        </thead>
+        <tbody>
           {% for car in owner.cars %}
             <tr>
-              <td>{{car.year}}</td>
+              <th scope="row">{{car.year}}</td>
               <td>{{ car.make }}</td>
               <td>{{ car.model }}</td>
             </tr>
           {% endfor %}
+        </tbody>
       </table>      
     </p>
 {% endblock %}

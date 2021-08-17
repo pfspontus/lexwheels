@@ -24,10 +24,13 @@ Example
 """
 from random import choice
 
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 
 from models import car
 from models import owner
+from models import user
 
 
 class Models:
@@ -36,6 +39,7 @@ class Models:
         self.db = SQLAlchemy()
         self.Car = car.init(self.db)
         self.Owner = owner.init(self.db)
+        self.User = user.init(self.db)
 
     def init_app(self, app):
         self.db.init_app(app)
@@ -69,6 +73,23 @@ class Models:
     def fill_db_with_mocks(self):
         self.fill_owners()
         self.fill_cars()
+
+    def add_user(self, username, password):
+        if not self.get_user_by_username(username):
+            pwhash = generate_password_hash(password)
+            user = self.User(username=username, password=pwhash)
+            s = self.db.session
+            s.add(user)
+            s.commit()
+
+    def authenticate_user(self, user, password):
+        return check_password_hash(user.password, password)
+
+    def get_user(self, user_id):
+        return self.User.query.filter_by(id=user_id).first()
+
+    def get_user_by_username(self, username):
+        return self.User.query.filter_by(username=username).first()
 
     def add_owner(self, owner_obj):
         s = self.db.session
