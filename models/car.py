@@ -23,4 +23,14 @@ def init(db):
             make = self.make or '<unknown make>'
             model = self.model or '<unknown model>'
             return f'<Car {year}, {make} {model}>'
+
+        def as_dict(self):
+            d = {
+                'id': self.id,
+                'make': self.make,
+                'model': self.model,
+                'year': self.year
+            }
+            return d
+
     return Car

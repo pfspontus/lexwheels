@@ -10,4 +10,13 @@ def init(db):
 
         def __repr__(self):
             return f'<Owner {self.name}>'
+
+        def as_dict(self):
+            d = {
+                'id': self.id,
+                'name': self.name,
+                'cars': [c.as_dict() for c in self.cars]
+            }
+            return d
+
     return Owner
