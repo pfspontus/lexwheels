@@ -31,11 +31,14 @@ from models import owner
 
 
 class Models:
-    def __init__(self, app):
+    def __init__(self):
         "Interface to access lexwheels data"
-        self.db = SQLAlchemy(app)
+        self.db = SQLAlchemy()
         self.Car = car.init(self.db)
         self.Owner = owner.init(self.db)
+
+    def init_app(self, app):
+        self.db.init_app(app)
 
     def create_db(self):
         self.db.create_all()
@@ -70,6 +73,10 @@ class Models:
     def add_owner(self, owner_obj):
         s = self.db.session
         s.add(owner_obj)
+        s.commit()
+
+    def commit(self):
+        s = self.db.session
         s.commit()
 
     def get_owner(self, owner_id):
