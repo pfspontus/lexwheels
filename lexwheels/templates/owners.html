@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Owner details {{ owner.name }}{% endblock %}
+{% block title %}{{__name__}} - Lexwheels{% endblock %}
 
 {% block navbar %}
   {% if g.user %}
@@ -24,27 +24,21 @@
 {% endblock %}
 
 {% block content %}
-    <p>
-      <h2>{{ owner.name }}</h2>
-      <table class="table">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Year</th>
-            <th scope="col">Make</th> 
-            <th scope="col">Model</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for car in owner.cars %}
-            <tr>
-              <th scope="row">{{car.year}}</td>
-              <td>{{ car.make }}</td>
-              <td>{{ car.model }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>      
-    </p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Owners</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for owner in owners %}
+        <tr>
+          <td scope="row">
+            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
-
 

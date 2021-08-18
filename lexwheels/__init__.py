@@ -48,6 +48,11 @@ def create_app(testing=None):
         owners = models.get_all_owners()
         return render_template('welcome.html', owners=owners)
 
+    @app.route('/owners')
+    def owners():
+        owners = models.get_all_owners()
+        return render_template('owners.html', owners=owners)
+
     @app.route('/owner/<int:id>')
     @login_required
     def owner(id):

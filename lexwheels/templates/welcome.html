@@ -18,24 +18,59 @@
             <a class="nav-link disabled" href="#">Admin</a>
           </li>
   {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('owners') }}">Owners</a>
+  </li>
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Owners</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for owner in owners %}
-        <tr>
-          <td scope="row">
-            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto ">
+        <h1 class="display-2"><span class="badge bg-light">Welcome to Lexwheels</span></h1>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <p class="lead">A student project about <a href="{{ url_for('owners') }}">owners</a> and their cars</p>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-auto">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Regular</h5>
+            <p class="card-text">
+              Without logging in you are able to access the owners page.
+            </p>
+            <a href="{{ url_for('owners') }}" class="card-link">Owners</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-auto">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">API</h5>
+            <p class="card-text">
+              There is a simple API that returns owners as JSON-formatted text.
+            </p>
+            <a href="{{ url_for('api.owners') }}" class="card-link">/api/owners</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-auto">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Admin</h5>
+            <p class="card-text">
+              To access the Admin pages you will have to be log in. The username and password are both admin
+            </p>
+            {# <a href="{{ url_for('admin') }}" class="card-link">Admin</a> #}
+            {# <a href="{{ url_for('admin') }}" class="card-link">Admin</a> #}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
