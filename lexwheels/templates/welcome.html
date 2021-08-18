@@ -8,7 +8,7 @@
             <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('welcome') }}">Admin</a>
+            <a class="nav-link" href="{{ url_for('admin.welcome') }}">Admin</a>
           </li>
   {% else %}
           <li class="nav-item active">
@@ -54,7 +54,7 @@
             <p class="card-text">
               There is a simple API that returns owners as JSON-formatted text.
             </p>
-            <a href="{{ url_for('api.owners') }}" class="card-link">/api/owners</a>
+            <a href="{{ url_for('api.owners') }}" class="card-link">{{ url_for('api.owners') }}</a>
           </div>
         </div>
       </div>
@@ -65,8 +65,7 @@
             <p class="card-text">
               To access the Admin pages you will have to be log in. The username and password are both admin
             </p>
-            {# <a href="{{ url_for('admin') }}" class="card-link">Admin</a> #}
-            {# <a href="{{ url_for('admin') }}" class="card-link">Admin</a> #}
+            <a href="{{ url_for('admin.welcome') }}" class="card-link">Admin</a> 
           </div>
         </div>
       </div>

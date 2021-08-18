@@ -43,6 +43,11 @@ def create_app(testing=None):
     api_views_define(api_page, models)
     app.register_blueprint(api_page)
 
+    from lexwheels.admin import admin_page
+    from lexwheels.admin import define as admin_views_define
+    admin_views_define(admin_page, models)
+    app.register_blueprint(admin_page)
+
     @app.route('/')
     def welcome():
         owners = models.get_all_owners()
@@ -57,6 +62,7 @@ def create_app(testing=None):
     @login_required
     def owner(id):
         owner = models.get_owner(id)
+        owner.cars.sort(key=lambda c: (c.year, c.make, c.model))
         return render_template('owner.html', owner=owner)
 
     return app

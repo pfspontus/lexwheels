@@ -73,6 +73,8 @@ class Models:
     def fill_db_with_mocks(self):
         self.fill_owners()
         self.fill_cars()
+        if not self.get_user_by_username('admin'):
+            self.add_user('admin', 'admin')
 
     def add_user(self, username, password):
         if not self.get_user_by_username(username):
@@ -104,7 +106,7 @@ class Models:
         return self.Owner.query.filter_by(id=owner_id).first()
 
     def get_all_owners(self):
-        return self.Owner.query.all()
+        return self.Owner.query.order_by(self.Owner.name).all()
 
     def get_car(self, car_id):
         return self.Car.query.filter_by(id=car_id).first()
