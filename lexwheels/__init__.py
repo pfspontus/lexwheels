@@ -11,7 +11,11 @@ from setup_config import setup_config
 def create_app(testing=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY=os.urandom(24)
+        SECRET_KEY=os.urandom(24),
+        SQLALCHEMY_ENGINE_OPTIONS={
+            "pool_pre_ping": True,
+            "pool_recycle": 300,
+        }
     )
 
     if testing:
