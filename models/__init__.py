@@ -105,6 +105,9 @@ class Models:
     def get_owner(self, owner_id):
         return self.Owner.query.filter_by(id=owner_id).first()
 
+    def get_owner_by_name(self, name):
+        return self.Owner.query.filter_by(name=name).first()
+
     def get_all_owners(self):
         return self.Owner.query.order_by(self.Owner.name).all()
 
