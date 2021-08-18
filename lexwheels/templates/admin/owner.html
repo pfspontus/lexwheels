@@ -25,7 +25,8 @@
         </div>
         <div class="col-md-auto ">
           <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-light">Edit</button>
+            <a href="{{ url_for('admin.edit_owner', id=owner.id) }}" class="btn btn-light">Edit</a>
+            <a href="#" class="btn btn-light">Append Car</a>
             <a href="{{ url_for('admin.delete_owner', id=owner.id) }}" class="btn btn-light">Delete</a>
           </div>
         </div>

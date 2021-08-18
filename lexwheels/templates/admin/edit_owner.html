@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Edit owner{% endblock %}
+
+
+{% block content %}
+  <p>
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-info" role="info">{{ message }}</div>
+    {% endfor %}
+    <h2>Edit {{ owner.name }}</h2>
+  </p>
+  <form method="post" id="edit_owner" action="">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="name" value="{{ owner.name }}">
+    </div>
+    <p>
+      <button type="submit" class="btn btn-primary">Update</button>
+      <a href="{{ url_for('admin.owner', id=owner.id) }}" class="btn btn-light">Cancel</a>
+    </p>
+  </form>
+{% endblock %}

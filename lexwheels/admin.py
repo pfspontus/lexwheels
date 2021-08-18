@@ -20,7 +20,7 @@ def define(auth_page, models):
         owners = models.get_all_owners()
         return render_template('admin/welcome.html', owners=owners)
 
-    @admin_page.route('/owner/<int:id>', methods=('GET', 'POST'))
+    @admin_page.route('/owner/<int:id>')
     @login_required
     def owner(id):
         owner = models.get_owner(id)
@@ -46,7 +46,29 @@ def define(auth_page, models):
 
         return render_template('admin/add_owner.html')
 
-    @admin_page.route('/delete_owner/<int:id>')
+    @admin_page.route('/edit_owner/<int:id>', methods=('GET', 'POST'))
+    @login_required
+    def edit_owner(id):
+        if request.method == 'POST':
+            new_name = request.form['name']
+            error = None
+
+            owner = models.get_owner(id)
+            existing_owner_with_name = models.get_owner_by_name(new_name)
+            if existing_owner_with_name:
+                error = 'Owner exists with the given name'
+
+            if error is None:
+                owner.name = new_name
+                models.commit()
+                return redirect(url_for('admin.owner', id=owner.id))
+
+            flash(error)
+
+        owner = models.get_owner(id)
+        return render_template('admin/edit_owner.html', owner=owner)
+
+    @admin_page.route('/delete_owner/<int:id>', methods=('GET',))
     @login_required
     def delete_owner(id):
         owner = models.get_owner(id)
@@ -55,7 +77,7 @@ def define(auth_page, models):
             return redirect(url_for('admin.welcome'))
         return abort(404)
 
-    @admin_page.route('/delete_car/<int:id>')
+    @admin_page.route('/delete_car/<int:id>', methods=('GET',))
     @login_required
     def delete_car(id):
         car = models.get_car(id)
