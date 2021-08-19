@@ -24,6 +24,9 @@ def define(auth_page, models):
     @login_required
     def owner(id):
         owner = models.get_owner(id)
+        if not owner:
+            return abort(404)
+        owner.cars.sort(key=lambda c: (c.year, c.make, c.model))
         return render_template('admin/owner.html', owner=owner)
 
     @admin_page.route('/add_owner', methods=('GET', 'POST'))
@@ -68,6 +71,8 @@ def define(auth_page, models):
             flash(error)
 
         owner = models.get_owner(id)
+        if not owner:
+            return abort(404)
         return render_template('admin/append_car.html', owner=owner)
 
     @admin_page.route('/edit_owner/<int:id>', methods=('GET', 'POST'))
@@ -90,6 +95,8 @@ def define(auth_page, models):
             flash(error)
 
         owner = models.get_owner(id)
+        if not owner:
+            return abort(404)
         return render_template('admin/edit_owner.html', owner=owner)
 
     @admin_page.route('/edit_car/<int:id>', methods=('GET', 'POST'))
@@ -111,6 +118,8 @@ def define(auth_page, models):
             flash(error)
 
         car = models.get_car(id)
+        if not car:
+            return abort(404)
         owner = car.owner
         return render_template('admin/edit_car.html', owner=owner, car=car)
 

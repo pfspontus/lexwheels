@@ -1,5 +1,6 @@
 import os
 
+from flask import abort
 from flask import Flask
 from flask import render_template
 
@@ -47,8 +48,7 @@ def create_app(testing=None):
 
     @app.route('/')
     def welcome():
-        owners = models.get_all_owners()
-        return render_template('welcome.html', owners=owners)
+        return render_template('welcome.html')
 
     @app.route('/owners')
     def owners():
@@ -58,6 +58,8 @@ def create_app(testing=None):
     @app.route('/owner/<int:id>')
     def owner(id):
         owner = models.get_owner(id)
+        if not owner:
+            return abort(404)
         owner.cars.sort(key=lambda c: (c.year, c.make, c.model))
         return render_template('owner.html', owner=owner)
 
