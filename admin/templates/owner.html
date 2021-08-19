@@ -8,7 +8,7 @@
       <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out</a>
     </li>
 <li class="nav-item active">
-  <a class="nav-link" href="{{ url_for('admin.welcome') }}">Admin</a>
+  <a class="nav-link" href="{{ url_for('admin.admin') }}">Admin</a>
 </li>
 {% endif %}
 <li class="nav-item">
@@ -23,6 +23,7 @@
         <div class="col-md-auto ">
           <h2>{{ owner.name }}</h2>
         </div>
+        {% if g.user %}
         <div class="col-md-auto ">
           <div class="btn-group" role="group" aria-label="Basic example">
             <a href="{{ url_for('admin.edit_owner', id=owner.id) }}" class="btn btn-light">Edit</a>
@@ -30,6 +31,7 @@
             <a href="{{ url_for('admin.delete_owner', id=owner.id) }}" class="btn btn-light">Delete</a>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
     <table class="table">
@@ -38,7 +40,9 @@
           <th scope="col">Year</th>
           <th scope="col">Make</th> 
           <th scope="col">Model</th>
-          <th scope="col"></th>
+          {% if g.user %}
+            <th scope="col"></th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -47,12 +51,14 @@
             <th scope="row">{{car.year}}</th>
             <td>{{ car.make }}</td>
             <td>{{ car.model }}</td>
-            <td>
-              <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                <a href="{{ url_for('admin.edit_car', id=car.id) }}" class="btn btn-light">Edit</a>
-                <a href="{{ url_for('admin.delete_car', id=car.id) }}" class="btn btn-light">Delete</a>
-              </div>
-            </td>
+            {% if g.user %}
+              <td>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                  <a href="{{ url_for('admin.edit_car', id=car.id) }}" class="btn btn-light">Edit</a>
+                  <a href="{{ url_for('admin.delete_car', id=car.id) }}" class="btn btn-light">Delete</a>
+                </div>
+              </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>

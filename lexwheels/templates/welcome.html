@@ -8,7 +8,7 @@
             <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('admin.welcome') }}">Admin</a>
+            <a class="nav-link" href="{{ url_for('admin.admin') }}">Admin</a>
           </li>
   {% else %}
           <li class="nav-item active">
@@ -69,7 +69,7 @@
               These operations are available on the Admin pages, and are restricted to authenticated users only.<br><br>
               Fortunately a user named <b>admin</b> with password <b>admin</b> is available.
             </p>
-            <a href="{{ url_for('admin.welcome') }}" class="card-link">Admin</a> 
+            <a href="{{ url_for('admin.admin') }}" class="card-link">Admin</a> 
           </div>
         </div>
       </div>

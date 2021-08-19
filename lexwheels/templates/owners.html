@@ -8,7 +8,7 @@
             <a class="nav-link" href="{{ url_for('auth.logout') }}">Log out</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('admin.welcome') }}">Admin</a>
+            <a class="nav-link" href="{{ url_for('admin.admin') }}">Admin</a>
           </li>
   {% else %}
           <li class="nav-item">
@@ -31,11 +31,13 @@
       </tr>
     </thead>
     <tbody>
-      {% for owner in owners %}
+      {% for owner_chunk in owners %}
         <tr>
-          <td scope="row">
-            <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
-          </td>
+          {% for owner in owner_chunk %}
+            <td scope="row">
+              <a href="{{ url_for('owner', id = owner.id) }}">{{ owner.name }}</a> 
+            </td>
+          {% endfor %}
         </tr>
       {% endfor %}
     </tbody>

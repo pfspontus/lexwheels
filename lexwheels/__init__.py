@@ -1,14 +1,36 @@
+"""
+Lexwheels, a student project application about
+cars and their owners.
+
+Example
+    $> flask init-db
+    Initialized database
+
+    $> flask fill-db
+    Filled database with dummy data.
+
+    $> flask run
+"""
 import os
 
-from flask import abort
 from flask import Flask
-from flask import render_template
 
+from admin import admin_page
+from admin import define as admin_views_define
+from api import api_page
+from api.views import define as api_views_define
+from auth import auth_page
+from auth import define as auth_views_define
 from models import Models
 from setup_config import setup_config
 
+from lexwheels import views
 
-def create_app(testing=None):
+
+def create_app():
+    """
+    Application factory, that instatiates the lexwheels app
+    """
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=os.urandom(24),
@@ -18,49 +40,20 @@ def create_app(testing=None):
         }
     )
 
-    if testing:
-        app.config.from_mapping(testing)
-    else:
-        setup_config(app)
-
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    setup_config(app)
 
     models = Models()
     models.init_app(app)
 
-    from lexwheels.auth import auth_page
-    from lexwheels.auth import define as auth_views_define
     auth_views_define(auth_page, models)
     app.register_blueprint(auth_page)
 
-    from api import api_page
-    from api.views import define as api_views_define
     api_views_define(api_page, models)
     app.register_blueprint(api_page)
 
-    from lexwheels.admin import admin_page
-    from lexwheels.admin import define as admin_views_define
     admin_views_define(admin_page, models)
     app.register_blueprint(admin_page)
 
-    @app.route('/')
-    def welcome():
-        return render_template('welcome.html')
-
-    @app.route('/owners')
-    def owners():
-        owners = models.get_all_owners()
-        return render_template('owners.html', owners=owners)
-
-    @app.route('/owner/<int:id>')
-    def owner(id):
-        owner = models.get_owner(id)
-        if not owner:
-            return abort(404)
-        owner.cars.sort(key=lambda c: (c.year, c.make, c.model))
-        return render_template('owner.html', owner=owner)
+    views.define(app, models)
 
     return app
