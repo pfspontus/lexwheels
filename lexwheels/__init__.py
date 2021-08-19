@@ -2,7 +2,6 @@ import os
 
 from flask import Flask
 from flask import render_template
-from flask_bootstrap import Bootstrap
 
 from models import Models
 from setup_config import setup_config
@@ -30,7 +29,6 @@ def create_app(testing=None):
 
     models = Models()
     models.init_app(app)
-    Bootstrap(app)
 
     from lexwheels.auth import auth_page
     from lexwheels.auth import define as auth_views_define

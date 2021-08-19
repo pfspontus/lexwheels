@@ -46,6 +46,30 @@ def define(auth_page, models):
 
         return render_template('admin/add_owner.html')
 
+    @admin_page.route('/owner/<int:id>/append_car', methods=('GET', 'POST'))
+    @login_required
+    def append_car(id):
+        if request.method == 'POST':
+            owner = models.get_owner(id)
+            error = None
+
+            if not owner:
+                error = 'Owner exists'
+
+            if error is None:
+                make = request.form['make']
+                model = request.form['model']
+                year = request.form['year']
+                car = models.Car(make=make, model=model, year=year)
+                owner.cars.append(car)
+                models.commit()
+                return redirect(url_for('admin.owner', id=owner.id))
+
+            flash(error)
+
+        owner = models.get_owner(id)
+        return render_template('admin/append_car.html', owner=owner)
+
     @admin_page.route('/edit_owner/<int:id>', methods=('GET', 'POST'))
     @login_required
     def edit_owner(id):
@@ -67,6 +91,28 @@ def define(auth_page, models):
 
         owner = models.get_owner(id)
         return render_template('admin/edit_owner.html', owner=owner)
+
+    @admin_page.route('/edit_car/<int:id>', methods=('GET', 'POST'))
+    @login_required
+    def edit_car(id):
+        if request.method == 'POST':
+            error = None
+            car = models.get_car(id)
+            if not car:
+                error = 'Car not found'
+
+            if error is None:
+                car.make = request.form['make']
+                car.model = request.form['model']
+                car.year = request.form['year']
+                models.commit()
+                return redirect(url_for('admin.owner', id=car.owner_id))
+
+            flash(error)
+
+        car = models.get_car(id)
+        owner = car.owner
+        return render_template('admin/edit_car.html', owner=owner, car=car)
 
     @admin_page.route('/delete_owner/<int:id>', methods=('GET',))
     @login_required
