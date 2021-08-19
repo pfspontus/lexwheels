@@ -34,7 +34,6 @@ def create_app(testing=None):
 
     from lexwheels.auth import auth_page
     from lexwheels.auth import define as auth_views_define
-    from lexwheels.auth import login_required
     auth_views_define(auth_page, models)
     app.register_blueprint(auth_page)
 
@@ -59,7 +58,6 @@ def create_app(testing=None):
         return render_template('owners.html', owners=owners)
 
     @app.route('/owner/<int:id>')
-    @login_required
     def owner(id):
         owner = models.get_owner(id)
         owner.cars.sort(key=lambda c: (c.year, c.make, c.model))

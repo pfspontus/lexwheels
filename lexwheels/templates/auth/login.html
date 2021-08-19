@@ -12,6 +12,7 @@
     <h2>Log In</h2>
   </p>
   <form method="post" id="login" action="">
+    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
     <div class="form-group">
       <label for="username">Username</label>
       <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp" placeholder="admin">

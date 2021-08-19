@@ -39,9 +39,10 @@
       <div class="col-md-auto">
         <div class="card" style="width: 18rem;">
           <div class="card-body">
-            <h5 class="card-title">Regular</h5>
+            <h5 class="card-title">Data</h5>
             <p class="card-text">
-              Without logging in you are able to access the owners page.
+              Registered owners are available to view as a list as well as individual owners.
+              The individual owners view lists the cars owned by the individual owner.
             </p>
             <a href="{{ url_for('owners') }}" class="card-link">Owners</a>
           </div>
@@ -52,7 +53,8 @@
           <div class="card-body">
             <h5 class="card-title">API</h5>
             <p class="card-text">
-              There is a simple API that returns owners as JSON-formatted text.
+              There is a simple API that returns owners as JSON-formatted data.<br><br>
+              In a similar fashion individual owners are also available.
             </p>
             <a href="{{ url_for('api.owners') }}" class="card-link">{{ url_for('api.owners') }}</a>
           </div>
@@ -63,7 +65,9 @@
           <div class="card-body">
             <h5 class="card-title">Admin</h5>
             <p class="card-text">
-              To access the Admin pages you will have to be log in. The username and password are both admin
+              Car owner data can be added to, changed and/or deleted.<br><br>
+              These operations are available on the Admin pages, and are restricted to authenticated users only.<br><br>
+              Fortunately a user named <b>admin</b> with password <b>admin</b> is available.
             </p>
             <a href="{{ url_for('admin.welcome') }}" class="card-link">Admin</a> 
           </div>

@@ -16,7 +16,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login', next=request.url))
 
         return view(**kwargs)
 
@@ -40,6 +40,8 @@ def define(auth_page, models):
             if error is None:
                 session.clear()
                 session['user_id'] = user.id
+                if request.form['next']:
+                    return redirect(request.form['next'])
                 return redirect(url_for('welcome'))
 
             flash(error)
