@@ -14,7 +14,7 @@ Example
     >>> m = models.Models()
 
     Adding a Owner
-    >>> owner = m.Owner('Bob')
+    >>> owner = m.Owner(name='Bob')
     >>> owner.id
     >>> m.add(owner)
     >>> owner.id
