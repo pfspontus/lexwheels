@@ -9,14 +9,14 @@ Initializing the database from a shell
     $> flask fill-db
     Filled database with dummy data.
 
-Example
+Example for flask shell
     >>> import models
     >>> m = models.Models()
 
     Adding a Owner
     >>> owner = m.Owner(name='Bob')
     >>> owner.id
-    >>> m.add(owner)
+    >>> m.add_owner(owner)
     >>> owner.id
     1
 
